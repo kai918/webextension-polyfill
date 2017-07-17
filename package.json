@@ -4,7 +4,11 @@
   "description": "A lightweight polyfill library for Promise-based WebExtension APIs in Chrome.",
   "main": "dist/browser-polyfill.js",
   "files": [
-    "dist"
+    "dist",
+    "src",
+    "test",
+    "api-metadata.json",
+    "Gruntfile.js"
   ],
   "repository": {
     "type": "git",
