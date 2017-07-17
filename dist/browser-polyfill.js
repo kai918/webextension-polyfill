@@ -11,7 +11,7 @@
     global.browser = mod.exports;
   }
 })(this, function (module) {
-  /* webextension-polyfill - v0.1.1 - Mon Jul 17 2017 16:58:34 */
+  /* webextension-polyfill - v0.1.1 - Mon Jul 17 2017 18:49:26 */
   /* -*- Mode: indent-tabs-mode: nil; js-indent-level: 2 -*- */
   /* vim: set sts=2 sw=2 et tw=80: */
   /* This Source Code Form is subject to the terms of the Mozilla Public
@@ -19,7 +19,16 @@
    * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
   "use strict";
 
-  if (typeof browser === "undefined") {
+  var _supportsPromises = false;
+  try {
+    _supportsPromises = browser.runtime.getPlatformInfo() instanceof Promise;
+  } catch (e) {
+    console.log("promises not supported.");
+  }
+
+  if (typeof browser === "undefined" || !_supportsPromises) {
+    var _browser = window.browser || window.msBrowser || window.chrome;
+
     // Wrapping the bulk of this polyfill in a one-time-use function is a minor
     // optimization for Firefox. Since Spidermonkey does not fully parse the
     // contents of a function until the first time it's called, and since it will
@@ -586,7 +595,7 @@
        * Creates and returns a function which, when called, will resolve or reject
        * the given promise based on how it is called:
        *
-       * - If, when called, `chrome.runtime.lastError` contains a non-null object,
+       * - If, when called, `_browser.runtime.lastError` contains a non-null object,
        *   the promise is rejected with that value.
        * - If the function is called with exactly one argument, the promise is
        *   resolved to that value.
@@ -606,8 +615,8 @@
        */
       const makeCallback = promise => {
         return (...callbackArgs) => {
-          if (chrome.runtime.lastError) {
-            promise.reject(chrome.runtime.lastError);
+          if (_browser.runtime.lastError) {
+            promise.reject(_browser.runtime.lastError);
           } else if (callbackArgs.length === 1) {
             promise.resolve(callbackArgs[0]);
           } else {
@@ -862,7 +871,7 @@
         }
       };
 
-      return wrapObject(chrome, staticWrappers, apiMetadata);
+      return wrapObject(_browser, staticWrappers, apiMetadata);
     };
 
     // The build process adds a UMD wrapper around this file, which makes the
