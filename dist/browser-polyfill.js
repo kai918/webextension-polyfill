@@ -11,7 +11,7 @@
     global.browser = mod.exports;
   }
 })(this, function (module) {
-  /* webextension-polyfill - v0.1.1 - Wed Aug 16 2017 17:58:35 */
+  /* webextension-polyfill - v0.1.1 - Fri Nov 24 2017 09:52:03 */
   /* -*- Mode: indent-tabs-mode: nil; js-indent-level: 2 -*- */
   /* vim: set sts=2 sw=2 et tw=80: */
   /* This Source Code Form is subject to the terms of the Mozilla Public
@@ -27,7 +27,7 @@
   }
 
   if (typeof browser === "undefined" || !_supportsPromises) {
-    var _browser = window.browser || window.msBrowser || window.chrome;
+    var _browser = window.browser || window.msBrowser || window.chrome || browser;
 
     // Wrapping the bulk of this polyfill in a one-time-use function is a minor
     // optimization for Firefox. Since Spidermonkey does not fully parse the
